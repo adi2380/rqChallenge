@@ -18,12 +18,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-@Import(EmployeeControllerAdvice.class)
 class EmployeeControllerTest {
 
     @Mock
@@ -133,8 +131,7 @@ class EmployeeControllerTest {
         when(employeeService.createEmployee(any(EmployeeRequest.class)))
                 .thenThrow(new IllegalArgumentException("Invalid Field Value"));
 
-        ResponseEntity<Employee> response = employeeController.createEmployee(newEmployee);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertThrows(IllegalArgumentException.class, () -> employeeController.createEmployee(newEmployee));
     }
 
     @Test
